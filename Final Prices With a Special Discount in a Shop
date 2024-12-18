@@ -1,0 +1,31 @@
+public class Solution {
+    public int[] finalPrices(int[] prices) {
+        int n = prices.length;
+        int[] result = new int[n];
+        
+        // Initialize result array with the same values as prices initially
+        System.arraycopy(prices, 0, result, 0, n);
+        
+        // Stack to keep track of prices and their indices
+        Stack<Integer> stack = new Stack<>();
+        
+        // Traverse the prices array from the end to the start
+        for (int i = n - 1; i >= 0; i--) {
+            // While there is a price in the stack and it is greater than the current price
+            // pop from the stack (because it can't be used for a discount)
+            while (!stack.isEmpty() && stack.peek() > prices[i]) {
+                stack.pop();
+            }
+            
+            // If the stack is not empty, apply the discount
+            if (!stack.isEmpty() && stack.peek() <= prices[i]) {
+                result[i] -= stack.peek();
+            }
+            
+            // Push the current price onto the stack
+            stack.push(prices[i]);
+        }
+        
+        return result;
+    }
+}
